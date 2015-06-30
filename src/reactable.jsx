@@ -461,24 +461,26 @@
                 }
 
                 pageButtons.push(
-                    <a className={className} key={i}
+                    <li><a className={className} key={i}
                         // create function to get around for-loop closure issue
                         onClick={(function(pageNum) {
                             return function() {
                                 this.props.onPageChange(pageNum);
                             }.bind(this);
-                        }.bind(this))(i)}>{i + 1}</a>
+                        }.bind(this))(i)}>{i + 1}</a></li>
                 );
             }
 
             return (
-                <tbody className="reactable-pagination">
+                <thead className="reactable-pagination">
                     <tr>
-                        <td colSpan={this.props.colSpan}>
-                            {pageButtons}
-                        </td>
+                        <th className="pagination pagination-small" colSpan={this.props.colSpan}>
+                            <ul>
+                                {pageButtons}
+                            </ul>
+                        </th>
                     </tr>
-                </tbody>
+                </thead>
             );
         }
     });
@@ -874,6 +876,14 @@
             var props = filterPropsFrom(this.props);
 
             return <table {...props}>{[
+                (pagination === true ?
+                <Paginator colSpan={columns.length}
+                     numPages={numPages}
+                     currentPage={currentPage}
+                     onPageChange={this.onPageChange}
+                     key="paginator"/>
+                 : null
+                ),
                 (columns && columns.length > 0 ?
                  <Thead columns={columns}
                      filtering={filtering}
@@ -888,15 +898,7 @@
                 ),
                 <tbody className="reactable-data" key="tbody">
                     {currentChildren}
-                </tbody>,
-                (pagination === true ?
-                 <Paginator colSpan={columns.length}
-                     numPages={numPages}
-                     currentPage={currentPage}
-                     onPageChange={this.onPageChange}
-                     key="paginator"/>
-                 : null
-                )
+                </tbody>
             ]}</table>;
         }
     });

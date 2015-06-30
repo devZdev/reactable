@@ -383,7 +383,7 @@
                             onFilter: this.props.onFilter, 
                             placeholder: this.props.filterPlaceholder, 
                             value: this.props.currentFilter}
-                        ) : '', 
+                        ) : null, 
                     React.createElement("tr", {className: "reactable-column-header"}, Ths)
                 )
             );
@@ -461,21 +461,23 @@
                 }
 
                 pageButtons.push(
-                    React.createElement("a", {className: className, key: i, 
+                    React.createElement("li", null, React.createElement("a", {className: className, key: i, 
                         // create function to get around for-loop closure issue
                         onClick: (function(pageNum) {
                             return function() {
                                 this.props.onPageChange(pageNum);
                             }.bind(this);
-                        }.bind(this))(i)}, i + 1)
+                        }.bind(this))(i)}, i + 1))
                 );
             }
 
             return (
-                React.createElement("tbody", {className: "reactable-pagination"}, 
+                React.createElement("thead", {className: "reactable-pagination"}, 
                     React.createElement("tr", null, 
-                        React.createElement("td", {colSpan: this.props.colSpan}, 
-                            pageButtons
+                        React.createElement("th", {className: "pagination pagination-small", colSpan: this.props.colSpan}, 
+                            React.createElement("ul", null, 
+                                pageButtons
+                            )
                         )
                     )
                 )
@@ -874,6 +876,14 @@
             var props = filterPropsFrom(this.props);
 
             return React.createElement("table", React.__spread({},  props), [
+                (pagination === true ?
+                React.createElement(Paginator, {colSpan: columns.length, 
+                     numPages: numPages, 
+                     currentPage: currentPage, 
+                     onPageChange: this.onPageChange, 
+                     key: "paginator"})
+                 : null
+                ),
                 (columns && columns.length > 0 ?
                  React.createElement(Thead, {columns: columns, 
                      filtering: filtering, 
@@ -888,14 +898,6 @@
                 ),
                 React.createElement("tbody", {className: "reactable-data", key: "tbody"}, 
                     currentChildren
-                ),
-                (pagination === true ?
-                 React.createElement(Paginator, {colSpan: columns.length, 
-                     numPages: numPages, 
-                     currentPage: currentPage, 
-                     onPageChange: this.onPageChange, 
-                     key: "paginator"})
-                 : null
                 )
             ]);
         }
