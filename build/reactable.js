@@ -461,7 +461,7 @@
                 }
 
                 pageButtons.push(
-                    React.createElement("li", null, React.createElement("a", {className: className, key: i, 
+                    React.createElement("li", {key: i}, React.createElement("a", {className: className, 
                         // create function to get around for-loop closure issue
                         onClick: (function(pageNum) {
                             return function() {

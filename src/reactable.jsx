@@ -461,7 +461,7 @@
                 }
 
                 pageButtons.push(
-                    <li><a className={className} key={i}
+                    <li key={i}><a className={className}
                         // create function to get around for-loop closure issue
                         onClick={(function(pageNum) {
                             return function() {
